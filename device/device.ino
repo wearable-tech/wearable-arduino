@@ -1,18 +1,22 @@
+const int analogInPin = A0;
+
 void setup() {
-	Serial.begin(9600);
+    Serial.begin(9600);
 }
 
 void loop() {
-        Serial.print(6);
-	Serial.print("123.45");
-	Serial.print("678");
-	delay(5000);
+    int oximetry = calculate_oximetry();
+    int pulsation = calculate_pulsation();
+    Serial.println(oximetry * 1.3);
+    Serial.println(pulsation * 1.0);
+    delay(5000);
 }
 
 int calculate_oximetry() {
-	return random(0, 100);
+    return random(0, 100);
 }
 
 int calculate_pulsation() {
-	return random(0, 100);
+    int sensorValue = analogRead(analogInPin);
+    return sensorValue;
 }
