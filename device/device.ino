@@ -3,7 +3,9 @@ void setup() {
 }
 
 void loop() {
-	Serial.print("Message to Android");
+        Serial.print(6);
+	Serial.print("123.45");
+	Serial.print("678");
 	delay(5000);
 }
 
