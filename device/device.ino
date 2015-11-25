@@ -2,38 +2,57 @@
 
 #define ANALOG_RED A0
 #define ANALOG_I_RED A1
-#define MAX 100
+#define MAX 200
 
 unsigned long red_values[100];
 unsigned long i_red_values[100];
 
-// Define various ADC prescaler
-const unsigned char PS_16 = (1 << ADPS2);
-const unsigned char PS_32 = (1 << ADPS2) | (1 << ADPS0);
-const unsigned char PS_64 = (1 << ADPS2) | (1 << ADPS1);
-const unsigned char PS_128 = (1 << ADPS2) | (1 << ADPS1) | (1 << ADPS0);
-
-
 void setup() {
     Serial.begin(9600);
-    pinMode(ANALOG_RED, INPUT);
-    pinMode(ANALOG_I_RED, INPUT);
-
-    // set up the ADC
-    ADCSRA &= ~PS_128;  // remove bits set by Arduino library
-
-    ADCSRA |= PS_64;    // set our own prescaler to 64
-    // ADCSRA |= PS_32;    // set our own prescaler to 32
-    // ADCSRA |= PS_16;    // set our own prescaler to 16
+    pinMode(13, OUTPUT);
+    delay(2000);
 }
 
 void loop() {
-//    int oximetry = calculate_oximetry();
-//    int pulsation = calculate_pulsation();
-//    Serial.println(oximetry * 1.3);
-//    Serial.println(pulsation * 1.0);
-    calculate_ratio();
+    /* int oximetry = calculate_oximetry();
+    int pulsation = calculate_pulsation();
+    Serial.println(oximetry * 1.0);
+    Serial.println(pulsation * 1.0);
+    // calculate_ratio();
     delay(5000);
+    */
+    int buffer_red[MAX];
+    int buffer_i_red[MAX];
+    
+    // ligar vermelhor
+    digitalWrite(13, HIGH);
+    for(int i = 0; i < MAX; i++)
+    {
+       buffer_red[i] = analogRead(ANALOG_RED);
+    }
+    digitalWrite(13, LOW);
+    
+    delay(2000);
+    digitalWrite(13, HIGH);
+    
+    for(int i = 0; i < 200; i++)
+    {
+       buffer_i_red[i] = analogRead(ANALOG_I_RED);
+    }
+
+    digitalWrite(13, LOW);
+    
+    for(int i = 0; i < 200; i++)
+    {
+      Serial.println(buffer_red[i]);
+      Serial.print("\n");
+    }
+    for(int i = 0; i < 200; i++)
+    {
+      Serial.println(buffer_i_red[i]);
+      Serial.print("\n");
+    }
+    delay(2000);
 }
 
 int calculate_oximetry() {
